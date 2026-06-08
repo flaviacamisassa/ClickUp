@@ -17,13 +17,54 @@
     --radius: 8px; --radius-lg: 12px;
     --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1.5rem 4rem; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* Login screen */
+  .login-screen {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem;
+  }
+  .login-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow); padding: 2.5rem 2rem; width: 100%; max-width: 340px; text-align: center;
+  }
+  .login-logo {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-hint); font-family: 'DM Mono', monospace; margin-bottom: 6px;
+  }
+  .login-title { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 2rem; }
+  .login-input {
+    width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text);
+    background: var(--bg); outline: none; transition: border-color 0.15s; text-align: center;
+    letter-spacing: 0.1em; margin-bottom: 12px;
+  }
+  .login-input:focus { border-color: var(--border-strong); background: var(--surface); }
+  .login-btn {
+    width: 100%; padding: 10px; background: var(--accent); color: #fff; border: none;
+    border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 14px;
+    font-weight: 600; cursor: pointer; transition: opacity 0.15s;
+  }
+  .login-btn:hover { opacity: 0.88; }
+  .login-error {
+    font-size: 12px; color: var(--warn); margin-top: 10px; min-height: 18px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* App screen */
+  .app-screen { display: none; padding: 2rem 1.5rem 4rem; }
   header { max-width: 860px; margin: 0 auto 2rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
   .brand { display: flex; flex-direction: column; gap: 2px; }
   .brand-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-hint); font-family: 'DM Mono', monospace; }
   .brand h1 { font-size: 22px; font-weight: 600; color: var(--text); line-height: 1.2; }
+  .header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .header-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+  .logout-btn {
+    font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text-hint);
+    background: none; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 4px 10px; cursor: pointer; transition: all 0.12s;
+  }
+  .logout-btn:hover { border-color: var(--border-strong); color: var(--text-muted); }
   .main { max-width: 860px; margin: 0 auto; }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); }
   .table-header { display: grid; grid-template-columns: 1fr 180px 180px 40px; padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--border); gap: 8px; }
@@ -75,7 +116,7 @@
   .cal-clear:hover { border-color: var(--warn); color: var(--warn); background: var(--warn-light); }
   .empty-state { padding: 2.5rem 1rem; text-align: center; color: var(--text-hint); font-size: 13px; display: none; }
   @media (max-width: 600px) {
-    body { padding: 1.25rem 1rem 3rem; }
+    .app-screen { padding: 1.25rem 1rem 3rem; }
     .table-header, .row { grid-template-columns: 1fr 140px 140px 36px; }
     .date-btn { font-size: 12px; padding: 5px 8px; }
   }
@@ -83,50 +124,67 @@
 </head>
 <body>
 
-<div class="loading-overlay" id="loading">
-  <div class="spinner"></div>
-  <div class="loading-text">carregando dados…</div>
+<!-- Login -->
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">PetNaturau</div>
+    <div class="login-title">ClickUp</div>
+    <input class="login-input" type="password" id="login-input" placeholder="senha" onkeydown="if(event.key==='Enter') doLogin()" />
+    <button class="login-btn" onclick="doLogin()">Entrar</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
 </div>
 
-<header>
-  <div class="brand">
-    <span class="brand-label">PetNaturau</span>
-    <h1>ClickUp - Petnaturau</h1>
+<!-- App -->
+<div class="app-screen" id="app-screen">
+  <div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+    <div class="loading-text">carregando dados…</div>
   </div>
-  <div class="header-meta">
-    <span class="dot"></span>
-    <span id="today-label"></span>
-  </div>
-</header>
 
-<div class="main">
-  <div class="card">
-    <div class="table-header">
-      <div class="th">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Cliente
-      </div>
-      <div class="th">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Última produção
-      </div>
-      <div class="th">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12M8 10l1.5 1.5L12 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Próxima produção
-        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style="opacity:.5"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div class="th"></div>
+  <header>
+    <div class="brand">
+      <span class="brand-label">PetNaturau</span>
+      <h1>ClickUp - Petnaturau</h1>
     </div>
-    <div id="rows-container"></div>
-    <div class="empty-state" id="empty">Nenhum cliente ainda. Clique em "Adicionar cliente" para começar.</div>
-    <div class="footer">
-      <button class="add-btn" onclick="addRow()">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        Adicionar cliente
-      </button>
-      <div class="save-indicator" id="save-indicator">
-        <div class="save-dot"></div>
-        <span id="save-label">conectando…</span>
+    <div class="header-right">
+      <div class="header-meta">
+        <span class="dot"></span>
+        <span id="today-label"></span>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">sair</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="card">
+      <div class="table-header">
+        <div class="th">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Cliente
+        </div>
+        <div class="th">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Última produção
+        </div>
+        <div class="th">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12M8 10l1.5 1.5L12 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Próxima produção
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style="opacity:.5"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="th"></div>
+      </div>
+      <div id="rows-container"></div>
+      <div class="empty-state" id="empty">Nenhum cliente ainda. Clique em "Adicionar cliente" para começar.</div>
+      <div class="footer">
+        <button class="add-btn" onclick="addRow()">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Adicionar cliente
+        </button>
+        <div class="save-indicator" id="save-indicator">
+          <div class="save-dot"></div>
+          <span id="save-label">conectando…</span>
+        </div>
       </div>
     </div>
   </div>
@@ -139,6 +197,8 @@
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOA_PKQKmqQijzmPk-VumaAkVni35B74fzVdBUkUiAgIylH_UkKDEY7dvanHoAQ_M/exec';
+const PASSWORD = '8877guicury';
+const SESSION_KEY = 'pn_auth';
 
 let rows = [];
 let nextId = 1;
@@ -147,11 +207,41 @@ let saveTimer = null;
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
-
 const monthsFull = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const dayLabels = ['D','S','T','Q','Q','S','S'];
 
-document.getElementById('today-label').textContent = today.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+function checkSession() {
+  if (sessionStorage.getItem(SESSION_KEY) === 'ok') {
+    showApp();
+  }
+}
+
+function doLogin() {
+  const val = document.getElementById('login-input').value;
+  if (val === PASSWORD) {
+    sessionStorage.setItem(SESSION_KEY, 'ok');
+    document.getElementById('login-error').textContent = '';
+    showApp();
+  } else {
+    document.getElementById('login-error').textContent = 'senha incorreta';
+    document.getElementById('login-input').value = '';
+    document.getElementById('login-input').focus();
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem(SESSION_KEY);
+  document.getElementById('app-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-input').value = '';
+}
+
+function showApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display = 'block';
+  document.getElementById('today-label').textContent = today.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+  loadFromSheets();
+}
 
 function formatDate(d) {
   if (!d) return null;
@@ -160,12 +250,7 @@ function formatDate(d) {
 
 function parseDate(s) {
   if (!s) return null;
-  // Handle ISO format from Sheets (2026-06-08T00:00:00.000Z)
-  if (s.includes('T')) {
-    const d = new Date(s);
-    return isNaN(d) ? null : d;
-  }
-  // Handle DD/MM/YYYY
+  if (s.includes('T')) { const d = new Date(s); return isNaN(d) ? null : d; }
   const parts = s.split('/');
   if (parts.length !== 3) return null;
   return new Date(+parts[2], +parts[1] - 1, +parts[0]);
@@ -174,27 +259,14 @@ function parseDate(s) {
 function callScript(params) {
   return new Promise((resolve, reject) => {
     const cbName = '_cb' + Date.now() + Math.floor(Math.random()*9999);
-    const timer = setTimeout(() => {
-      cleanup();
-      reject(new Error('timeout'));
-    }, 20000);
-
+    const timer = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, 20000);
     function cleanup() {
-      clearTimeout(timer);
-      delete window[cbName];
-      const el = document.getElementById(cbName);
-      if (el) el.remove();
+      clearTimeout(timer); delete window[cbName];
+      const el = document.getElementById(cbName); if (el) el.remove();
     }
-
-    window[cbName] = function(data) {
-      cleanup();
-      resolve(data);
-    };
-
+    window[cbName] = function(data) { cleanup(); resolve(data); };
     const qs = Object.entries({ ...params, callback: cbName })
-      .map(([k,v]) => encodeURIComponent(k) + '=' + encodeURIComponent(String(v)))
-      .join('&');
-
+      .map(([k,v]) => encodeURIComponent(k) + '=' + encodeURIComponent(String(v))).join('&');
     const script = document.createElement('script');
     script.id = cbName;
     script.src = SCRIPT_URL + '?' + qs;
@@ -239,9 +311,7 @@ async function saveToSheets() {
     const data = await callScript({ action: 'save', rows: JSON.stringify(rows) });
     if (data.ok) setSaveState('saved', 'dados salvos');
     else setSaveState('error', 'erro ao salvar');
-  } catch(e) {
-    setSaveState('error', 'erro de conexão');
-  }
+  } catch(e) { setSaveState('error', 'erro de conexão'); }
 }
 
 function initEmptyRows() {
@@ -252,10 +322,7 @@ function initEmptyRows() {
 }
 
 function collectInputValues() {
-  rows.forEach(r => {
-    const el = document.getElementById('ci-' + r.id);
-    if (el) r.client = el.value;
-  });
+  rows.forEach(r => { const el = document.getElementById('ci-' + r.id); if (el) r.client = el.value; });
 }
 
 function setSaveState(state, label) {
@@ -274,17 +341,14 @@ function debounceSave() {
 function getSortedRows() {
   return [...rows].sort((a, b) => {
     const da = parseDate(a.proxima), db = parseDate(b.proxima);
-    if (!da && !db) return 0;
-    if (!da) return 1;
-    if (!db) return -1;
+    if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
     return da - db;
   });
 }
 
 function getProximaState(s) {
   if (!s) return '';
-  const d = parseDate(s);
-  if (!d) return '';
+  const d = parseDate(s); if (!d) return '';
   const diff = Math.round((d - today) / 86400000);
   if (diff < 0) return 'urgente';
   if (diff === 0) return 'hoje';
@@ -295,8 +359,7 @@ function getProximaState(s) {
 function addRow() {
   collectInputValues();
   rows.push({ id: nextId++, client: '', ultima: null, proxima: null });
-  render();
-  debounceSave();
+  render(); debounceSave();
   const inputs = document.querySelectorAll('.client-input');
   if (inputs.length) inputs[inputs.length - 1].focus();
 }
@@ -304,8 +367,7 @@ function addRow() {
 function deleteRow(id) {
   collectInputValues();
   rows = rows.filter(r => r.id !== id);
-  render();
-  saveToSheets();
+  render(); saveToSheets();
 }
 
 function render() {
@@ -319,9 +381,7 @@ function render() {
     div.className = 'row';
     const proxState = getProximaState(row.proxima);
     div.innerHTML = `
-      <div>
-        <input class="client-input" id="ci-${row.id}" type="text" placeholder="Nome do cliente…" value="${escHtml(row.client)}" oninput="onClientInput(${row.id})" autocomplete="off" />
-      </div>
+      <div><input class="client-input" id="ci-${row.id}" type="text" placeholder="Nome do cliente…" value="${escHtml(row.client)}" oninput="onClientInput(${row.id})" autocomplete="off" /></div>
       <div>
         <button class="date-btn ${row.ultima ? 'has-date' : ''}" onclick="openCal(event,${row.id},'ultima')">
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -345,7 +405,7 @@ function render() {
 }
 
 function escHtml(s) {
-  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function onClientInput(id) {
@@ -355,31 +415,22 @@ function onClientInput(id) {
 }
 
 function openCal(e, rowId, field) {
-  e.stopPropagation();
-  collectInputValues();
+  e.stopPropagation(); collectInputValues();
   const row = rows.find(r => r.id === rowId);
   const existing = row[field] ? parseDate(row[field]) : null;
   const rect = e.currentTarget.getBoundingClientRect();
-  calCtx = {
-    rowId, field,
-    year: existing ? existing.getFullYear() : today.getFullYear(),
-    month: existing ? existing.getMonth() : today.getMonth(),
-  };
+  calCtx = { rowId, field, year: existing ? existing.getFullYear() : today.getFullYear(), month: existing ? existing.getMonth() : today.getMonth() };
   const box = document.getElementById('cal-box');
   let top = rect.bottom + window.scrollY + 6;
   let left = rect.left + window.scrollX;
   if (left + 256 > window.innerWidth - 12) left = window.innerWidth - 256 - 12;
   if (top + 300 > window.scrollY + window.innerHeight) top = rect.top + window.scrollY - 310;
-  box.style.top = top + 'px';
-  box.style.left = Math.max(8, left) + 'px';
+  box.style.top = top + 'px'; box.style.left = Math.max(8, left) + 'px';
   document.getElementById('cal-overlay').style.display = 'block';
   renderCal(existing);
 }
 
-function closeCal() {
-  document.getElementById('cal-overlay').style.display = 'none';
-  calCtx = null;
-}
+function closeCal() { document.getElementById('cal-overlay').style.display = 'none'; calCtx = null; }
 
 function renderCal(selected) {
   const { year, month } = calCtx;
@@ -398,23 +449,15 @@ function renderCal(selected) {
     cells += `<div class="cal-day${cls}" onclick="selectDate(${year},${month},${d})">${d}</div>`;
   }
   const tail = 42 - firstDay - daysInMonth;
-  for (let d = 1; d <= tail; d++) {
-    cells += `<div class="cal-day other" onclick="selectDate(${year},${month+1},${d})">${d}</div>`;
-  }
+  for (let d = 1; d <= tail; d++) cells += `<div class="cal-day other" onclick="selectDate(${year},${month+1},${d})">${d}</div>`;
   document.getElementById('cal-box').innerHTML = `
     <div class="cal-top">
-      <button class="cal-nav" onclick="navCal(-1)">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8l4 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
+      <button class="cal-nav" onclick="navCal(-1)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8l4 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="cal-title">${monthsFull[month]} ${year}</div>
-      <button class="cal-nav" onclick="navCal(1)">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3l4 5-4 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
+      <button class="cal-nav" onclick="navCal(1)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3l4 5-4 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
     <div class="cal-grid">${cells}</div>
-    <div class="cal-actions">
-      <button class="cal-clear" onclick="clearDate()">Limpar data</button>
-    </div>
+    <div class="cal-actions"><button class="cal-clear" onclick="clearDate()">Limpar data</button></div>
   `;
 }
 
@@ -429,25 +472,15 @@ function navCal(dir) {
 function selectDate(year, month, day) {
   const d = new Date(year, month, day);
   const row = rows.find(r => r.id === calCtx.rowId);
-  if (row) {
-    row[calCtx.field] = formatDate(d);
-    closeCal();
-    render();
-    saveToSheets();
-  }
+  if (row) { row[calCtx.field] = formatDate(d); closeCal(); render(); saveToSheets(); }
 }
 
 function clearDate() {
   const row = rows.find(r => r.id === calCtx.rowId);
-  if (row) {
-    row[calCtx.field] = null;
-    closeCal();
-    render();
-    saveToSheets();
-  }
+  if (row) { row[calCtx.field] = null; closeCal(); render(); saveToSheets(); }
 }
 
-loadFromSheets();
+checkSession();
 </script>
 </body>
 </html>
