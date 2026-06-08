@@ -139,7 +139,6 @@
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOA_PKQKmqQijzmPk-VumaAkVni35B74fzVdBUkUiAgIylH_UkKDEY7dvanHoAQ_M/exec';
-const PROXY = 'https://api.allorigins.win/get?url=';
 
 let rows = [];
 let nextId = 1;
@@ -161,34 +160,69 @@ function formatDate(d) {
 
 function parseDate(s) {
   if (!s) return null;
+  // Handle ISO format from Sheets (2026-06-08T00:00:00.000Z)
+  if (s.includes('T')) {
+    const d = new Date(s);
+    return isNaN(d) ? null : d;
+  }
+  // Handle DD/MM/YYYY
   const parts = s.split('/');
   if (parts.length !== 3) return null;
   return new Date(+parts[2], +parts[1] - 1, +parts[0]);
 }
 
-async function apiFetch(params) {
-  const qs = Object.entries(params).map(([k,v]) => encodeURIComponent(k) + '=' + encodeURIComponent(v)).join('&');
-  const targetUrl = SCRIPT_URL + '?' + qs;
-  const proxyUrl = PROXY + encodeURIComponent(targetUrl);
-  const res = await fetch(proxyUrl);
-  const wrapper = await res.json();
-  return JSON.parse(wrapper.contents);
+function callScript(params) {
+  return new Promise((resolve, reject) => {
+    const cbName = '_cb' + Date.now() + Math.floor(Math.random()*9999);
+    const timer = setTimeout(() => {
+      cleanup();
+      reject(new Error('timeout'));
+    }, 20000);
+
+    function cleanup() {
+      clearTimeout(timer);
+      delete window[cbName];
+      const el = document.getElementById(cbName);
+      if (el) el.remove();
+    }
+
+    window[cbName] = function(data) {
+      cleanup();
+      resolve(data);
+    };
+
+    const qs = Object.entries({ ...params, callback: cbName })
+      .map(([k,v]) => encodeURIComponent(k) + '=' + encodeURIComponent(String(v)))
+      .join('&');
+
+    const script = document.createElement('script');
+    script.id = cbName;
+    script.src = SCRIPT_URL + '?' + qs;
+    script.onerror = () => { cleanup(); reject(new Error('load error')); };
+    document.head.appendChild(script);
+  });
 }
 
 async function loadFromSheets() {
   try {
-    const data = await apiFetch({ action: 'load' });
+    const data = await callScript({ action: 'load' });
     if (data.ok && data.rows && data.rows.length > 0) {
-      rows = data.rows.map(r => ({
-        id: +r.id || nextId++,
-        client: String(r.client || ''),
-        ultima: r.ultima || null,
-        proxima: r.proxima || null,
-      }));
-      nextId = Math.max(...rows.map(r => r.id)) + 1;
-    } else {
-      initEmptyRows();
+      const validRows = data.rows.filter(r => r.id);
+      if (validRows.length > 0) {
+        rows = validRows.map(r => ({
+          id: +r.id || nextId++,
+          client: String(r.client || ''),
+          ultima: r.ultima ? formatDate(parseDate(String(r.ultima))) : null,
+          proxima: r.proxima ? formatDate(parseDate(String(r.proxima))) : null,
+        }));
+        nextId = Math.max(...rows.map(r => r.id)) + 1;
+        setSaveState('saved', 'dados salvos');
+        document.getElementById('loading').classList.add('hidden');
+        render();
+        return;
+      }
     }
+    initEmptyRows();
     setSaveState('saved', 'dados salvos');
   } catch(e) {
     initEmptyRows();
@@ -202,7 +236,7 @@ async function saveToSheets() {
   collectInputValues();
   setSaveState('saving', 'salvando…');
   try {
-    const data = await apiFetch({ action: 'save', rows: JSON.stringify(rows) });
+    const data = await callScript({ action: 'save', rows: JSON.stringify(rows) });
     if (data.ok) setSaveState('saved', 'dados salvos');
     else setSaveState('error', 'erro ao salvar');
   } catch(e) {
