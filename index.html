@@ -19,52 +19,38 @@
   }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  /* Login screen */
-  .login-screen {
-    min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem;
-  }
-  .login-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
-    box-shadow: var(--shadow); padding: 2.5rem 2rem; width: 100%; max-width: 340px; text-align: center;
-  }
-  .login-logo {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--text-hint); font-family: 'DM Mono', monospace; margin-bottom: 6px;
-  }
+  /* Login */
+  .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+  .login-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: 2.5rem 2rem; width: 100%; max-width: 340px; text-align: center; }
+  .login-logo { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-hint); font-family: 'DM Mono', monospace; margin-bottom: 6px; }
   .login-title { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 2rem; }
-  .login-input {
-    width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text);
-    background: var(--bg); outline: none; transition: border-color 0.15s; text-align: center;
-    letter-spacing: 0.1em; margin-bottom: 12px;
-  }
+  .login-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.15s; text-align: center; letter-spacing: 0.1em; margin-bottom: 12px; }
   .login-input:focus { border-color: var(--border-strong); background: var(--surface); }
-  .login-btn {
-    width: 100%; padding: 10px; background: var(--accent); color: #fff; border: none;
-    border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 14px;
-    font-weight: 600; cursor: pointer; transition: opacity 0.15s;
-  }
+  .login-btn { width: 100%; padding: 10px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
   .login-btn:hover { opacity: 0.88; }
-  .login-error {
-    font-size: 12px; color: var(--warn); margin-top: 10px; min-height: 18px;
-    font-family: 'DM Mono', monospace;
-  }
+  .login-error { font-size: 12px; color: var(--warn); margin-top: 10px; min-height: 18px; font-family: 'DM Mono', monospace; }
 
-  /* App screen */
+  /* App */
   .app-screen { display: none; padding: 2rem 1.5rem 4rem; }
   header { max-width: 860px; margin: 0 auto 2rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
   .brand { display: flex; flex-direction: column; gap: 2px; }
   .brand-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-hint); font-family: 'DM Mono', monospace; }
   .brand h1 { font-size: 22px; font-weight: 600; color: var(--text); line-height: 1.2; }
-  .header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .header-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+  .header-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .header-meta { font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; display: flex; align-items: center; gap: 6px; }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
-  .logout-btn {
-    font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text-hint);
-    background: none; border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 4px 10px; cursor: pointer; transition: all 0.12s;
-  }
+
+  /* Storage toggle */
+  .storage-toggle { display: flex; border: 1px solid var(--border-strong); border-radius: var(--radius); overflow: hidden; }
+  .stg-btn { padding: 5px 12px; font-size: 11px; font-family: 'DM Mono', monospace; font-weight: 500; border: none; background: var(--surface); color: var(--text-muted); cursor: pointer; transition: all 0.12s; white-space: nowrap; }
+  .stg-btn:first-child { border-right: 1px solid var(--border-strong); }
+  .stg-btn.active-local { background: var(--bg); color: var(--text); }
+  .stg-btn.active-drive { background: var(--accent-light); color: var(--accent-text); }
+  .stg-btn.connected-drive { background: var(--accent-light); color: var(--accent-text); }
+
+  .logout-btn { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text-hint); background: none; border: 1px solid var(--border); border-radius: var(--radius); padding: 4px 10px; cursor: pointer; transition: all 0.12s; }
   .logout-btn:hover { border-color: var(--border-strong); color: var(--text-muted); }
+
   .main { max-width: 860px; margin: 0 auto; }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); }
   .table-header { display: grid; grid-template-columns: 1fr 180px 180px 40px; padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--border); gap: 8px; }
@@ -91,11 +77,13 @@
   .save-indicator.saved { color: var(--accent); }
   .save-indicator.error { color: var(--warn); }
   .save-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-  .loading-overlay { position: fixed; inset: 0; background: rgba(247,246,242,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 300; gap: 12px; }
+
+  .loading-overlay { position: fixed; inset: 0; background: rgba(247,246,242,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 300; gap: 12px; }
   .loading-overlay.hidden { display: none; }
   .spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading-text { font-size: 13px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+
   .cal-overlay { position: fixed; inset: 0; z-index: 200; display: none; }
   .cal-backdrop { position: absolute; inset: 0; }
   .cal-box { position: absolute; background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 14px; width: 256px; box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06); }
@@ -115,6 +103,10 @@
   .cal-clear { width: 100%; padding: 6px; font-size: 12px; font-family: 'DM Sans', sans-serif; color: var(--text-muted); background: none; border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; transition: all 0.12s; }
   .cal-clear:hover { border-color: var(--warn); color: var(--warn); background: var(--warn-light); }
   .empty-state { padding: 2.5rem 1rem; text-align: center; color: var(--text-hint); font-size: 13px; display: none; }
+
+  .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: #1A1916; color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 13px; z-index: 400; opacity: 0; transition: opacity 0.25s; pointer-events: none; white-space: nowrap; font-weight: 500; font-family: 'DM Mono', monospace; }
+  .toast.show { opacity: 1; }
+
   @media (max-width: 600px) {
     .app-screen { padding: 1.25rem 1rem 3rem; }
     .table-header, .row { grid-template-columns: 1fr 140px 140px 36px; }
@@ -137,9 +129,9 @@
 
 <!-- App -->
 <div class="app-screen" id="app-screen">
-  <div class="loading-overlay" id="loading">
+  <div class="loading-overlay hidden" id="loading">
     <div class="spinner"></div>
-    <div class="loading-text">carregando dados…</div>
+    <div class="loading-text" id="loading-text">carregando dados…</div>
   </div>
 
   <header>
@@ -151,6 +143,14 @@
       <div class="header-meta">
         <span class="dot"></span>
         <span id="today-label"></span>
+      </div>
+      <div class="storage-toggle">
+        <button class="stg-btn" id="btn-local" onclick="useLocal()" title="Salvar neste navegador">
+          📱 Local
+        </button>
+        <button class="stg-btn" id="btn-drive" onclick="useDrive()" title="Sincronizar com Google Drive">
+          ☁️ Drive
+        </button>
       </div>
       <button class="logout-btn" onclick="doLogout()">sair</button>
     </div>
@@ -183,7 +183,7 @@
         </button>
         <div class="save-indicator" id="save-indicator">
           <div class="save-dot"></div>
-          <span id="save-label">conectando…</span>
+          <span id="save-label">pronto</span>
         </div>
       </div>
     </div>
@@ -195,21 +195,43 @@
   <div class="cal-box" id="cal-box"></div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
+// ── CONFIGURAÇÕES ──────────────────────────────────────
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOA_PKQKmqQijzmPk-VumaAkVni35B74fzVdBUkUiAgIylH_UkKDEY7dvanHoAQ_M/exec';
 const PASSWORD = '8877guicury';
 const SESSION_KEY = 'pn_auth';
+const LOCAL_KEY = 'pn_clickup_rows';
+const STORAGE_MODE_KEY = 'pn_storage_mode';
+const DRIVE_FILE_NAME = 'petnaturau-clickup.json';
+const DRIVE_FOLDER_ID = ''; // deixar vazio para salvar na raiz do Drive
+const CLIENT_ID = '653711423119-d9t0b6kunaaefnhec1n3t90imfss5t12.apps.googleusercontent.com';
+const SCOPES = 'https://www.googleapis.com/auth/drive.file';
 
+// ── ESTADO ────────────────────────────────────────────
 let rows = [];
 let nextId = 1;
 let calCtx = null;
 let saveTimer = null;
+let storageMode = 'local'; // 'local' ou 'drive'
+let driveToken = null;
+let driveFileId = null;
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 const monthsFull = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const dayLabels = ['D','S','T','Q','Q','S','S'];
 
+// ── TOAST ─────────────────────────────────────────────
+function showToast(msg, dur=2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+
+// ── LOGIN ─────────────────────────────────────────────
 function checkSession() {
   if (sessionStorage.getItem(SESSION_KEY) === 'ok') {
     showApp();
@@ -240,9 +262,255 @@ function showApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'block';
   document.getElementById('today-label').textContent = today.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-  loadFromSheets();
+
+  // checar retorno do OAuth
+  const gotDrive = checkDriveCallback();
+  if (gotDrive) return; // loadData já foi chamado dentro
+
+  // restaurar modo salvo
+  const savedMode = localStorage.getItem(STORAGE_MODE_KEY) || 'local';
+  if (savedMode === 'drive') {
+    const token = localStorage.getItem('pn_drive_token');
+    const exp = parseInt(localStorage.getItem('pn_drive_token_exp') || '0');
+    if (token && Date.now() < exp) {
+      driveToken = token;
+      storageMode = 'drive';
+      updateStorageUI();
+      loadData();
+      return;
+    }
+    // token expirado, volta para local
+  }
+  storageMode = 'local';
+  updateStorageUI();
+  loadData();
 }
 
+// ── GOOGLE DRIVE AUTH ─────────────────────────────────
+function checkDriveCallback() {
+  const hash = location.hash;
+  if (!hash.includes('access_token')) return false;
+
+  const p = new URLSearchParams(hash.slice(1));
+  driveToken = p.get('access_token');
+  const exp = Date.now() + (parseInt(p.get('expires_in') || '3600') * 1000);
+  localStorage.setItem('pn_drive_token', driveToken);
+  localStorage.setItem('pn_drive_token_exp', String(exp));
+  localStorage.setItem(STORAGE_MODE_KEY, 'drive');
+  history.replaceState(null, '', location.pathname);
+  storageMode = 'drive';
+  updateStorageUI();
+  loadData();
+  return true;
+}
+
+function useDrive() {
+  if (storageMode === 'drive' && driveToken) {
+    if (confirm('Desconectar do Google Drive e usar armazenamento local?')) {
+      driveToken = null;
+      driveFileId = null;
+      localStorage.removeItem('pn_drive_token');
+      localStorage.removeItem('pn_drive_token_exp');
+      storageMode = 'local';
+      localStorage.setItem(STORAGE_MODE_KEY, 'local');
+      updateStorageUI();
+      showToast('☁️ Desconectado do Drive — usando Local');
+    }
+    return;
+  }
+  // redirecionar para OAuth
+  const params = new URLSearchParams({
+    client_id: CLIENT_ID,
+    redirect_uri: location.origin + location.pathname,
+    response_type: 'token',
+    scope: SCOPES,
+    prompt: 'select_account'
+  });
+  location.href = 'https://accounts.google.com/o/oauth2/auth?' + params;
+}
+
+function useLocal() {
+  if (storageMode === 'local') return;
+  if (confirm('Trocar para armazenamento local? Os dados do Drive continuarão lá, mas as alterações serão salvas apenas neste navegador.')) {
+    storageMode = 'local';
+    localStorage.setItem(STORAGE_MODE_KEY, 'local');
+    updateStorageUI();
+    showToast('📱 Usando armazenamento local');
+  }
+}
+
+function updateStorageUI() {
+  const btnLocal = document.getElementById('btn-local');
+  const btnDrive = document.getElementById('btn-drive');
+  if (storageMode === 'local') {
+    btnLocal.className = 'stg-btn active-local';
+    btnDrive.className = 'stg-btn';
+    btnDrive.textContent = '☁️ Drive';
+  } else {
+    btnLocal.className = 'stg-btn';
+    btnDrive.className = 'stg-btn connected-drive';
+    btnDrive.textContent = '☁️ Drive ✓';
+  }
+}
+
+// ── CARREGAR DADOS ────────────────────────────────────
+async function loadData() {
+  showLoading('carregando dados…');
+  if (storageMode === 'drive' && driveToken) {
+    await loadFromDrive();
+  } else {
+    loadFromLocal();
+  }
+  hideLoading();
+  render();
+}
+
+function loadFromLocal() {
+  try {
+    const raw = localStorage.getItem(LOCAL_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      rows = data.rows || [];
+      nextId = data.nextId || (rows.length + 1);
+      if (rows.length === 0) initEmptyRows();
+    } else {
+      initEmptyRows();
+    }
+    setSaveState('saved', 'local');
+  } catch(e) {
+    initEmptyRows();
+    setSaveState('error', 'erro');
+  }
+}
+
+async function loadFromDrive() {
+  try {
+    showLoading('conectando ao Drive…');
+    // buscar arquivo pelo nome
+    const searchRes = await fetch(
+      `https://www.googleapis.com/drive/v3/files?q=name='${DRIVE_FILE_NAME}'+and+trashed=false&spaces=drive&fields=files(id,name)`,
+      { headers: { Authorization: `Bearer ${driveToken}` } }
+    );
+    const searchData = await searchRes.json();
+
+    if (searchData.files && searchData.files.length > 0) {
+      driveFileId = searchData.files[0].id;
+      showLoading('lendo dados do Drive…');
+      const fileRes = await fetch(
+        `https://www.googleapis.com/drive/v3/files/${driveFileId}?alt=media`,
+        { headers: { Authorization: `Bearer ${driveToken}` } }
+      );
+      const data = await fileRes.json();
+      rows = data.rows || [];
+      nextId = data.nextId || (rows.length + 1);
+      if (rows.length === 0) initEmptyRows();
+      setSaveState('saved', 'drive');
+      showToast('☁️ Dados carregados do Drive!');
+    } else {
+      // arquivo não existe ainda, cria
+      initEmptyRows();
+      await saveToDrive();
+      showToast('☁️ Arquivo criado no Drive!');
+    }
+  } catch(e) {
+    console.error(e);
+    // fallback para local
+    loadFromLocal();
+    showToast('⚠️ Drive indisponível, usando local');
+    storageMode = 'local';
+    updateStorageUI();
+  }
+}
+
+// ── SALVAR DADOS ──────────────────────────────────────
+async function saveData() {
+  collectInputValues();
+  if (storageMode === 'drive' && driveToken) {
+    await saveToDrive();
+  } else {
+    saveToLocal();
+  }
+}
+
+function saveToLocal() {
+  try {
+    localStorage.setItem(LOCAL_KEY, JSON.stringify({ rows, nextId }));
+    setSaveState('saved', 'local');
+  } catch(e) {
+    setSaveState('error', 'erro local');
+  }
+}
+
+async function saveToDrive() {
+  setSaveState('saving', 'salvando…');
+  try {
+    const body = JSON.stringify({ rows, nextId });
+    // sempre salva local como backup
+    localStorage.setItem(LOCAL_KEY, body);
+
+    if (driveFileId) {
+      await fetch(
+        `https://www.googleapis.com/upload/drive/v3/files/${driveFileId}?uploadType=media`,
+        { method: 'PATCH', headers: { Authorization: `Bearer ${driveToken}`, 'Content-Type': 'application/json' }, body }
+      );
+    } else {
+      const metaRes = await fetch(
+        'https://www.googleapis.com/drive/v3/files',
+        { method: 'POST', headers: { Authorization: `Bearer ${driveToken}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: DRIVE_FILE_NAME, mimeType: 'application/json' }) }
+      );
+      const meta = await metaRes.json();
+      driveFileId = meta.id;
+      await fetch(
+        `https://www.googleapis.com/upload/drive/v3/files/${driveFileId}?uploadType=media`,
+        { method: 'PATCH', headers: { Authorization: `Bearer ${driveToken}`, 'Content-Type': 'application/json' }, body }
+      );
+    }
+    setSaveState('saved', 'drive');
+  } catch(e) {
+    setSaveState('error', 'erro drive');
+    showToast('⚠️ Erro ao salvar no Drive');
+  }
+}
+
+function debounceSave() {
+  setSaveState('saving', 'salvando…');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveData, 1200);
+}
+
+// ── UI HELPERS ────────────────────────────────────────
+function showLoading(msg) {
+  document.getElementById('loading').classList.remove('hidden');
+  document.getElementById('loading-text').textContent = msg;
+}
+function hideLoading() {
+  document.getElementById('loading').classList.add('hidden');
+}
+
+function setSaveState(state, label) {
+  const ind = document.getElementById('save-indicator');
+  const lbl = document.getElementById('save-label');
+  ind.className = 'save-indicator ' + state;
+  const icons = { saved: '✓', saving: '…', error: '!' };
+  lbl.textContent = (icons[state] || '') + ' ' + label;
+}
+
+function initEmptyRows() {
+  rows = [
+    { id: nextId++, client: '', ultima: null, proxima: null },
+    { id: nextId++, client: '', ultima: null, proxima: null },
+  ];
+}
+
+function collectInputValues() {
+  rows.forEach(r => {
+    const el = document.getElementById('ci-' + r.id);
+    if (el) r.client = el.value;
+  });
+}
+
+// ── DATAS ─────────────────────────────────────────────
 function formatDate(d) {
   if (!d) return null;
   return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear();
@@ -256,88 +524,7 @@ function parseDate(s) {
   return new Date(+parts[2], +parts[1] - 1, +parts[0]);
 }
 
-function callScript(params) {
-  return new Promise((resolve, reject) => {
-    const cbName = '_cb' + Date.now() + Math.floor(Math.random()*9999);
-    const timer = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, 20000);
-    function cleanup() {
-      clearTimeout(timer); delete window[cbName];
-      const el = document.getElementById(cbName); if (el) el.remove();
-    }
-    window[cbName] = function(data) { cleanup(); resolve(data); };
-    const qs = Object.entries({ ...params, callback: cbName })
-      .map(([k,v]) => encodeURIComponent(k) + '=' + encodeURIComponent(String(v))).join('&');
-    const script = document.createElement('script');
-    script.id = cbName;
-    script.src = SCRIPT_URL + '?' + qs;
-    script.onerror = () => { cleanup(); reject(new Error('load error')); };
-    document.head.appendChild(script);
-  });
-}
-
-async function loadFromSheets() {
-  try {
-    const data = await callScript({ action: 'load' });
-    if (data.ok && data.rows && data.rows.length > 0) {
-      const validRows = data.rows.filter(r => r.id);
-      if (validRows.length > 0) {
-        rows = validRows.map(r => ({
-          id: +r.id || nextId++,
-          client: String(r.client || ''),
-          ultima: r.ultima ? formatDate(parseDate(String(r.ultima))) : null,
-          proxima: r.proxima ? formatDate(parseDate(String(r.proxima))) : null,
-        }));
-        nextId = Math.max(...rows.map(r => r.id)) + 1;
-        setSaveState('saved', 'dados salvos');
-        document.getElementById('loading').classList.add('hidden');
-        render();
-        return;
-      }
-    }
-    initEmptyRows();
-    setSaveState('saved', 'dados salvos');
-  } catch(e) {
-    initEmptyRows();
-    setSaveState('error', 'erro de conexão');
-  }
-  document.getElementById('loading').classList.add('hidden');
-  render();
-}
-
-async function saveToSheets() {
-  collectInputValues();
-  setSaveState('saving', 'salvando…');
-  try {
-    const data = await callScript({ action: 'save', rows: JSON.stringify(rows) });
-    if (data.ok) setSaveState('saved', 'dados salvos');
-    else setSaveState('error', 'erro ao salvar');
-  } catch(e) { setSaveState('error', 'erro de conexão'); }
-}
-
-function initEmptyRows() {
-  rows = [
-    { id: nextId++, client: '', ultima: null, proxima: null },
-    { id: nextId++, client: '', ultima: null, proxima: null },
-  ];
-}
-
-function collectInputValues() {
-  rows.forEach(r => { const el = document.getElementById('ci-' + r.id); if (el) r.client = el.value; });
-}
-
-function setSaveState(state, label) {
-  const ind = document.getElementById('save-indicator');
-  const lbl = document.getElementById('save-label');
-  ind.className = 'save-indicator ' + state;
-  lbl.textContent = label;
-}
-
-function debounceSave() {
-  setSaveState('saving', 'salvando…');
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(saveToSheets, 1200);
-}
-
+// ── TABELA ────────────────────────────────────────────
 function getSortedRows() {
   return [...rows].sort((a, b) => {
     const da = parseDate(a.proxima), db = parseDate(b.proxima);
@@ -367,7 +554,7 @@ function addRow() {
 function deleteRow(id) {
   collectInputValues();
   rows = rows.filter(r => r.id !== id);
-  render(); saveToSheets();
+  render(); saveData();
 }
 
 function render() {
@@ -414,6 +601,7 @@ function onClientInput(id) {
   debounceSave();
 }
 
+// ── CALENDÁRIO ────────────────────────────────────────
 function openCal(e, rowId, field) {
   e.stopPropagation(); collectInputValues();
   const row = rows.find(r => r.id === rowId);
@@ -472,14 +660,15 @@ function navCal(dir) {
 function selectDate(year, month, day) {
   const d = new Date(year, month, day);
   const row = rows.find(r => r.id === calCtx.rowId);
-  if (row) { row[calCtx.field] = formatDate(d); closeCal(); render(); saveToSheets(); }
+  if (row) { row[calCtx.field] = formatDate(d); closeCal(); render(); saveData(); }
 }
 
 function clearDate() {
   const row = rows.find(r => r.id === calCtx.rowId);
-  if (row) { row[calCtx.field] = null; closeCal(); render(); saveToSheets(); }
+  if (row) { row[calCtx.field] = null; closeCal(); render(); saveData(); }
 }
 
+// ── INIT ──────────────────────────────────────────────
 checkSession();
 </script>
 </body>
