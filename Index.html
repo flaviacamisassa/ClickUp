@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Produção por Cliente</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F6F2;
+    --surface: #FFFFFF;
+    --border: #E4E2DC;
+    --border-strong: #C9C7BF;
+    --text: #1A1916;
+    --text-muted: #7A7870;
+    --text-hint: #B0AEA8;
+    --accent: #2D5A3D;
+    --accent-light: #EAF2EC;
+    --accent-text: #1E4029;
+    --warn: #7A2D1E;
+    --warn-light: #FAEDE9;
+    --warn-text: #5A1E12;
+    --info: #1A3D5C;
+    --info-light: #E8F0F7;
+    --info-text: #102840;
+    --today: #2D4A7A;
+    --today-light: #E8EDF7;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    max-width: 860px;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .brand-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-hint);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .brand h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .table-header {
+    display: grid;
+    grid-template-columns: 1fr 180px 180px 40px;
+    padding: 10px 16px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+  }
+
+  .th {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .th svg { opacity: 0.6; flex-shrink: 0; }
+
+  #rows-container { }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 180px 180px 40px;
+    padding: 10px 16px;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    transition: background 0.12s;
+    animation: fadeIn 0.2s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .row:last-child { border-bottom: none; }
+  .row:hover { background: #FAFAF8; }
+
+  .client-input {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    padding: 3px 0;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .client-input::placeholder { color: var(--text-hint); font-weight: 400; }
+  .client-input:focus { border-bottom-color: var(--border-strong); }
+
+  .date-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.12s;
+    white-space: nowrap;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .date-btn:hover { border-color: var(--border-strong); color: var(--text); background: var(--bg); }
+
+  .date-btn.has-date { color: var(--text); border-color: var(--border-strong); }
+
+  .date-btn.proxima-date.has-date {
+    background: var(--info-light);
+    border-color: #B0C4D8;
+    color: var(--info-text);
+    font-weight: 500;
+  }
+
+  .date-btn.proxima-date.urgente {
+    background: var(--warn-light);
+    border-color: #E0B8B2;
+    color: var(--warn-text);
+    font-weight: 500;
+  }
+
+  .date-btn.proxima-date.hoje {
+    background: var(--accent-light);
+    border-color: #A8C8B4;
+    color: var(--accent-text);
+    font-weight: 500;
+  }
+
+  .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-hint);
+    padding: 6px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.12s;
+  }
+
+  .delete-btn:hover { color: var(--warn); background: var(--warn-light); }
+
+  .footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+
+  .add-btn:hover { background: var(--accent-light); border-color: #A8C8B4; color: var(--accent-text); }
+
+  .save-indicator {
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-hint);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .save-indicator.saved { color: var(--accent); }
+
+  .save-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* Calendar overlay */
+  .cal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: none;
+  }
+
+  .cal-backdrop {
+    position: absolute;
+    inset: 0;
+  }
+
+  .cal-box {
+    position: absolute;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    padding: 14px;
+    width: 256px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
+  }
+
+  .cal-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .cal-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: capitalize;
+  }
+
+  .cal-nav {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 4px;
+    border-radius: 6px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cal-nav:hover { background: var(--bg); color: var(--text); }
+
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+
+  .cal-lbl {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.04em;
+    color: var(--text-hint);
+    padding: 3px 0 6px;
+    text-transform: uppercase;
+  }
+
+  .cal-day {
+    text-align: center;
+    font-size: 12px;
+    padding: 5px 2px;
+    cursor: pointer;
+    border-radius: 6px;
+    color: var(--text);
+    transition: background 0.1s;
+    line-height: 1.4;
+  }
+
+  .cal-day:hover { background: var(--bg); }
+  .cal-day.other { color: var(--text-hint); }
+
+  .cal-day.is-today {
+    font-weight: 600;
+    color: var(--today);
+    background: var(--today-light);
+  }
+
+  .cal-day.selected {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .cal-day.selected:hover { background: var(--accent); }
+
+  .cal-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 6px;
+  }
+
+  .cal-clear {
+    flex: 1;
+    padding: 6px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-muted);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+
+  .cal-clear:hover { border-color: var(--warn); color: var(--warn); background: var(--warn-light); }
+
+  .empty-state {
+    padding: 2.5rem 1rem;
+    text-align: center;
+    color: var(--text-hint);
+    font-size: 13px;
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    .table-header, .row {
+      grid-template-columns: 1fr 140px 140px 36px;
+    }
+    .date-btn { font-size: 12px; padding: 5px 8px; }
+  }
+
+  @media (max-width: 460px) {
+    .table-header, .row {
+      grid-template-columns: 1fr 1fr 36px;
+    }
+    .th:nth-child(3), .row > .col-proxima { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="brand-label">PetNaturau</span>
+    <h1>Produção por Cliente</h1>
+  </div>
+  <div class="header-meta">
+    <span class="dot"></span>
+    <span id="today-label"></span>
+  </div>
+</header>
+
+<div class="main">
+  <div class="card">
+    <div class="table-header">
+      <div class="th">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Cliente
+      </div>
+      <div class="th">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Última produção
+      </div>
+      <div class="th">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12M8 10l1.5 1.5L12 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Próxima produção
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style="opacity:.5"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="th"></div>
+    </div>
+
+    <div id="rows-container"></div>
+    <div class="empty-state" id="empty">Nenhum cliente ainda. Clique em "Adicionar cliente" para começar.</div>
+
+    <div class="footer">
+      <button class="add-btn" onclick="addRow()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Adicionar cliente
+      </button>
+      <div class="save-indicator saved" id="save-indicator">
+        <div class="save-dot"></div>
+        <span id="save-label">dados salvos</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Calendar overlay -->
+<div class="cal-overlay" id="cal-overlay">
+  <div class="cal-backdrop" onclick="closeCal()"></div>
+  <div class="cal-box" id="cal-box"></div>
+</div>
+
+<script>
+const STORAGE_KEY = 'petnaturau_producao_v1';
+
+let rows = [];
+let nextId = 1;
+let calCtx = null;
+let saveTimer = null;
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+const monthsFull = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const dayLabels = ['D','S','T','Q','Q','S','S'];
+
+document.getElementById('today-label').textContent = today.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+function formatDate(d) {
+  if (!d) return null;
+  return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear();
+}
+
+function parseDate(s) {
+  if (!s) return null;
+  const [d, m, y] = s.split('/');
+  return new Date(+y, +m - 1, +d);
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      rows = data.rows || [];
+      nextId = data.nextId || (rows.length + 1);
+    }
+  } catch(e) {}
+  if (rows.length === 0) {
+    rows = [
+      { id: nextId++, client: '', ultima: null, proxima: null },
+      { id: nextId++, client: '', ultima: null, proxima: null },
+    ];
+  }
+  render();
+}
+
+function save() {
+  try {
+    rows.forEach(r => {
+      const el = document.getElementById('ci-' + r.id);
+      if (el) r.client = el.value;
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ rows, nextId }));
+    setSaveState('saved');
+  } catch(e) {
+    setSaveState('error');
+  }
+}
+
+function setSaveState(state) {
+  const ind = document.getElementById('save-indicator');
+  const lbl = document.getElementById('save-label');
+  ind.className = 'save-indicator ' + state;
+  if (state === 'saved') lbl.textContent = 'dados salvos';
+  else if (state === 'saving') lbl.textContent = 'salvando…';
+  else lbl.textContent = 'erro ao salvar';
+}
+
+function debounceSave() {
+  setSaveState('saving');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(save, 600);
+}
+
+function getSortedRows() {
+  return [...rows].sort((a, b) => {
+    const da = parseDate(a.proxima), db = parseDate(b.proxima);
+    if (!da && !db) return 0;
+    if (!da) return 1;
+    if (!db) return -1;
+    return da - db;
+  });
+}
+
+function getProximaState(s) {
+  if (!s) return '';
+  const d = parseDate(s);
+  const diff = Math.round((d - today) / 86400000);
+  if (diff < 0) return 'urgente';
+  if (diff === 0) return 'hoje';
+  if (diff <= 3) return 'urgente';
+  return 'has-date';
+}
+
+function addRow() {
+  rows.push({ id: nextId++, client: '', ultima: null, proxima: null });
+  render();
+  debounceSave();
+  const lastInputs = document.querySelectorAll('.client-input');
+  if (lastInputs.length) lastInputs[lastInputs.length - 1].focus();
+}
+
+function deleteRow(id) {
+  rows = rows.filter(r => r.id !== id);
+  render();
+  save();
+}
+
+function render() {
+  const container = document.getElementById('rows-container');
+  const empty = document.getElementById('empty');
+  const sorted = getSortedRows();
+
+  empty.style.display = sorted.length === 0 ? 'block' : 'none';
+
+  container.innerHTML = '';
+  sorted.forEach(row => {
+    const div = document.createElement('div');
+    div.className = 'row';
+    div.dataset.id = row.id;
+
+    const proxState = getProximaState(row.proxima);
+    const proximaExtraClass = proxState ? proxState : '';
+
+    div.innerHTML = `
+      <div>
+        <input class="client-input" id="ci-${row.id}" type="text" placeholder="Nome do cliente…" value="${escHtml(row.client)}" oninput="onClientInput(${row.id})" autocomplete="off" />
+      </div>
+      <div>
+        <button class="date-btn ${row.ultima ? 'has-date' : ''}" onclick="openCal(event, ${row.id}, 'ultima')">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          ${row.ultima || 'Selecionar'}
+        </button>
+      </div>
+      <div class="col-proxima">
+        <button class="date-btn proxima-date ${proxState ? 'has-date' : ''} ${proximaExtraClass}" onclick="openCal(event, ${row.id}, 'proxima')">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12M8 10l1.5 1.5L12 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          ${row.proxima || 'Selecionar'}
+        </button>
+      </div>
+      <div>
+        <button class="delete-btn" onclick="deleteRow(${row.id})" title="Remover">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M6 4V2h4v2M13 4l-1 10H4L3 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function escHtml(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function onClientInput(id) {
+  const row = rows.find(r => r.id === id);
+  if (row) row.client = document.getElementById('ci-' + id).value;
+  debounceSave();
+}
+
+function openCal(e, rowId, field) {
+  e.stopPropagation();
+  const row = rows.find(r => r.id === rowId);
+  const existing = row[field] ? parseDate(row[field]) : null;
+  const btn = e.currentTarget;
+  const rect = btn.getBoundingClientRect();
+
+  calCtx = {
+    rowId, field,
+    year: existing ? existing.getFullYear() : today.getFullYear(),
+    month: existing ? existing.getMonth() : today.getMonth(),
+  };
+
+  const box = document.getElementById('cal-box');
+  let top = rect.bottom + window.scrollY + 6;
+  let left = rect.left + window.scrollX;
+  if (left + 256 > window.innerWidth - 12) left = window.innerWidth - 256 - 12;
+  if (top + 300 > window.scrollY + window.innerHeight) top = rect.top + window.scrollY - 310;
+  box.style.top = top + 'px';
+  box.style.left = left + 'px';
+
+  document.getElementById('cal-overlay').style.display = 'block';
+  renderCal(existing);
+}
+
+function closeCal() {
+  document.getElementById('cal-overlay').style.display = 'none';
+  calCtx = null;
+}
+
+function renderCal(selected) {
+  const { year, month } = calCtx;
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInPrev = new Date(year, month, 0).getDate();
+
+  let cells = dayLabels.map(d => `<div class="cal-lbl">${d}</div>`).join('');
+
+  for (let i = 0; i < firstDay; i++) {
+    const d = daysInPrev - firstDay + 1 + i;
+    cells += `<div class="cal-day other" onclick="selectDate(${year},${month-1},${d})">${d}</div>`;
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+    const isSel = selected && d === selected.getDate() && month === selected.getMonth() && year === selected.getFullYear();
+    const cls = (isToday ? ' is-today' : '') + (isSel ? ' selected' : '');
+    cells += `<div class="cal-day${cls}" onclick="selectDate(${year},${month},${d})">${d}</div>`;
+  }
+
+  const tail = 42 - firstDay - daysInMonth;
+  for (let d = 1; d <= tail; d++) {
+    cells += `<div class="cal-day other" onclick="selectDate(${year},${month+1},${d})">${d}</div>`;
+  }
+
+  document.getElementById('cal-box').innerHTML = `
+    <div class="cal-top">
+      <button class="cal-nav" onclick="navCal(-1)">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L6 8l4 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="cal-title">${monthsFull[month]} ${year}</div>
+      <button class="cal-nav" onclick="navCal(1)">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3l4 5-4 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div class="cal-grid">${cells}</div>
+    <div class="cal-actions">
+      <button class="cal-clear" onclick="clearDate()">Limpar data</button>
+    </div>
+  `;
+}
+
+function navCal(dir) {
+  calCtx.month += dir;
+  if (calCtx.month > 11) { calCtx.month = 0; calCtx.year++; }
+  if (calCtx.month < 0) { calCtx.month = 11; calCtx.year--; }
+  const row = rows.find(r => r.id === calCtx.rowId);
+  renderCal(row[calCtx.field] ? parseDate(row[calCtx.field]) : null);
+}
+
+function selectDate(year, month, day) {
+  const d = new Date(year, month, day);
+  const row = rows.find(r => r.id === calCtx.rowId);
+  if (row) {
+    row[calCtx.field] = formatDate(d);
+    closeCal();
+    render();
+    save();
+  }
+}
+
+function clearDate() {
+  const row = rows.find(r => r.id === calCtx.rowId);
+  if (row) {
+    row[calCtx.field] = null;
+    closeCal();
+    render();
+    save();
+  }
+}
+
+load();
+</script>
+</body>
+</html>
