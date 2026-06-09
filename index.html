@@ -621,6 +621,9 @@ function addRow() {
 }
 
 function deleteRow(id) {
+  const row = data[currentTab].find(r => r.id === id);
+  const name = (row && row.client && row.client.trim()) ? row.client.trim() : 'este cliente';
+  if (!confirm(`Apagar "${name}"? Esta ação não pode ser desfeita.`)) return;
   collectInputValues();
   data[currentTab] = data[currentTab].filter(r => r.id !== id);
   delete openObs[id];
