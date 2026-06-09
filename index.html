@@ -26,13 +26,21 @@
   .login-title { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 2rem; }
   .login-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.15s; text-align: center; letter-spacing: 0.1em; margin-bottom: 12px; }
   .login-input:focus { border-color: var(--border-strong); background: var(--surface); }
-  .login-btn { width: 100%; padding: 10px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
+  .login-btn { width: 100%; padding: 10px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; margin-bottom: 10px; }
   .login-btn:hover { opacity: 0.88; }
+  .login-btn-drive { width: 100%; padding: 10px; background: var(--surface); color: var(--accent-text); border: 1.5px solid var(--accent); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .login-btn-drive:hover { background: var(--accent-light); }
+  .login-divider { display: flex; align-items: center; gap: 10px; margin: 14px 0; color: var(--text-hint); font-size: 12px; }
+  .login-divider::before, .login-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .login-error { font-size: 12px; color: var(--warn); margin-top: 10px; min-height: 18px; font-family: 'DM Mono', monospace; }
+
+  /* Drive warning */
+  .drive-warning { background: var(--warn-light); border: 1px solid #E0B8B2; border-radius: var(--radius); padding: 10px 14px; margin-bottom: 1.5rem; font-size: 13px; color: var(--warn-text); display: none; align-items: center; gap: 10px; max-width: 860px; margin-left: auto; margin-right: auto; }
+  .drive-warning button { background: var(--warn); color: #fff; border: none; border-radius: var(--radius); padding: 5px 12px; font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
 
   /* App */
   .app-screen { display: none; padding: 2rem 1.5rem 4rem; }
-  header { max-width: 860px; margin: 0 auto 2rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  header { max-width: 860px; margin: 0 auto 1.5rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
   .brand { display: flex; flex-direction: column; gap: 2px; }
   .brand-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-hint); font-family: 'DM Mono', monospace; }
   .brand h1 { font-size: 22px; font-weight: 600; color: var(--text); line-height: 1.2; }
@@ -40,39 +48,60 @@
   .header-meta { font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; display: flex; align-items: center; gap: 6px; }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
 
-  /* Storage toggle */
   .storage-toggle { display: flex; border: 1px solid var(--border-strong); border-radius: var(--radius); overflow: hidden; }
   .stg-btn { padding: 5px 12px; font-size: 11px; font-family: 'DM Mono', monospace; font-weight: 500; border: none; background: var(--surface); color: var(--text-muted); cursor: pointer; transition: all 0.12s; white-space: nowrap; }
   .stg-btn:first-child { border-right: 1px solid var(--border-strong); }
   .stg-btn.active-local { background: var(--bg); color: var(--text); }
   .stg-btn.active-drive { background: var(--accent-light); color: var(--accent-text); }
-  .stg-btn.connected-drive { background: var(--accent-light); color: var(--accent-text); }
-
   .logout-btn { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text-hint); background: none; border: 1px solid var(--border); border-radius: var(--radius); padding: 4px 10px; cursor: pointer; transition: all 0.12s; }
   .logout-btn:hover { border-color: var(--border-strong); color: var(--text-muted); }
 
+  /* Tabs */
+  .tabs-wrap { max-width: 860px; margin: 0 auto 1rem; }
+  .tabs { display: flex; border-bottom: 2px solid var(--border); gap: 0; }
+  .tab-btn { padding: 10px 20px; font-size: 13px; font-weight: 500; border: none; background: none; color: var(--text-muted); cursor: pointer; font-family: 'DM Sans', sans-serif; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.15s; }
+  .tab-btn.active { color: var(--accent-text); border-bottom-color: var(--accent); font-weight: 600; }
+  .tab-btn:hover:not(.active) { color: var(--text); }
+
   .main { max-width: 860px; margin: 0 auto; }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); }
-  .table-header { display: grid; grid-template-columns: 1fr 180px 180px 40px; padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--border); gap: 8px; }
+  .table-header { display: grid; grid-template-columns: 1fr 36px 170px 170px 40px; padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--border); gap: 8px; }
   .th { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); font-family: 'DM Mono', monospace; display: flex; align-items: center; gap: 6px; }
-  .row { display: grid; grid-template-columns: 1fr 180px 180px 40px; padding: 10px 16px; gap: 8px; border-bottom: 1px solid var(--border); align-items: center; transition: background 0.12s; animation: fadeIn 0.2s ease; }
+
+  .row-wrap { border-bottom: 1px solid var(--border); }
+  .row-wrap:last-child { border-bottom: none; }
+  .row { display: grid; grid-template-columns: 1fr 36px 170px 170px 40px; padding: 10px 16px; gap: 8px; align-items: center; transition: background 0.12s; animation: fadeIn 0.2s ease; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
-  .row:last-child { border-bottom: none; }
   .row:hover { background: #FAFAF8; }
+
+  /* Observações */
+  .obs-btn { background: none; border: none; cursor: pointer; color: var(--text-hint); padding: 4px; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: all 0.12s; font-size: 14px; }
+  .obs-btn:hover { color: var(--accent-text); background: var(--accent-light); }
+  .obs-btn.has-obs { color: var(--accent-text); }
+  .obs-panel { display: none; padding: 0 16px 12px; animation: fadeIn 0.15s ease; }
+  .obs-panel.open { display: block; }
+  .obs-textarea { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; resize: vertical; min-height: 70px; transition: border-color 0.15s; line-height: 1.5; }
+  .obs-textarea:focus { border-color: var(--border-strong); background: var(--surface); }
+  .obs-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-hint); font-family: 'DM Mono', monospace; margin-bottom: 6px; display: block; }
+
   .client-input { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: var(--text); background: transparent; border: none; border-bottom: 1px solid transparent; padding: 3px 0; width: 100%; outline: none; transition: border-color 0.15s; }
   .client-input::placeholder { color: var(--text-hint); font-weight: 400; }
   .client-input:focus { border-bottom-color: var(--border-strong); }
-  .date-btn { display: inline-flex; align-items: center; gap: 7px; padding: 5px 10px; border: 1px solid var(--border); border-radius: var(--radius); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400; color: var(--text-muted); cursor: pointer; transition: all 0.12s; white-space: nowrap; width: 100%; justify-content: flex-start; }
+
+  .date-btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border: 1px solid var(--border); border-radius: var(--radius); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 400; color: var(--text-muted); cursor: pointer; transition: all 0.12s; white-space: nowrap; width: 100%; justify-content: flex-start; }
   .date-btn:hover { border-color: var(--border-strong); color: var(--text); background: var(--bg); }
   .date-btn.has-date { color: var(--text); border-color: var(--border-strong); }
   .date-btn.proxima-date.has-date { background: var(--info-light); border-color: #B0C4D8; color: var(--info-text); font-weight: 500; }
   .date-btn.proxima-date.urgente { background: var(--warn-light); border-color: #E0B8B2; color: var(--warn-text); font-weight: 500; }
   .date-btn.proxima-date.hoje { background: var(--accent-light); border-color: #A8C8B4; color: var(--accent-text); font-weight: 500; }
+
   .delete-btn { background: none; border: none; cursor: pointer; color: var(--text-hint); padding: 6px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
   .delete-btn:hover { color: var(--warn); background: var(--warn-light); }
+
   .footer { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--bg); flex-wrap: wrap; gap: 8px; }
   .add-btn { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius); background: var(--surface); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--text); cursor: pointer; transition: all 0.12s; }
   .add-btn:hover { background: var(--accent-light); border-color: #A8C8B4; color: var(--accent-text); }
+
   .save-indicator { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text-hint); display: flex; align-items: center; gap: 5px; }
   .save-indicator.saved { color: var(--accent); }
   .save-indicator.error { color: var(--warn); }
@@ -86,31 +115,32 @@
 
   .cal-overlay { position: fixed; inset: 0; z-index: 200; display: none; }
   .cal-backdrop { position: absolute; inset: 0; }
-  .cal-box { position: absolute; background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 14px; width: 256px; box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06); }
+  .cal-box { position: absolute; background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 14px; width: 256px; box-shadow: 0 8px 24px rgba(0,0,0,0.10); }
   .cal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
   .cal-title { font-size: 13px; font-weight: 600; color: var(--text); text-transform: capitalize; }
-  .cal-nav { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px; border-radius: 6px; line-height: 1; display: flex; align-items: center; justify-content: center; }
+  .cal-nav { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
   .cal-nav:hover { background: var(--bg); color: var(--text); }
   .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-  .cal-lbl { text-align: center; font-size: 10px; font-weight: 600; font-family: 'DM Mono', monospace; letter-spacing: 0.04em; color: var(--text-hint); padding: 3px 0 6px; text-transform: uppercase; }
-  .cal-day { text-align: center; font-size: 12px; padding: 5px 2px; cursor: pointer; border-radius: 6px; color: var(--text); transition: background 0.1s; line-height: 1.4; }
+  .cal-lbl { text-align: center; font-size: 10px; font-weight: 600; font-family: 'DM Mono', monospace; color: var(--text-hint); padding: 3px 0 6px; text-transform: uppercase; }
+  .cal-day { text-align: center; font-size: 12px; padding: 5px 2px; cursor: pointer; border-radius: 6px; color: var(--text); transition: background 0.1s; }
   .cal-day:hover { background: var(--bg); }
   .cal-day.other { color: var(--text-hint); }
   .cal-day.is-today { font-weight: 600; color: var(--today); background: var(--today-light); }
   .cal-day.selected { background: var(--accent); color: #fff; font-weight: 600; }
-  .cal-day.selected:hover { background: var(--accent); }
   .cal-actions { margin-top: 10px; }
   .cal-clear { width: 100%; padding: 6px; font-size: 12px; font-family: 'DM Sans', sans-serif; color: var(--text-muted); background: none; border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; transition: all 0.12s; }
   .cal-clear:hover { border-color: var(--warn); color: var(--warn); background: var(--warn-light); }
+
   .empty-state { padding: 2.5rem 1rem; text-align: center; color: var(--text-hint); font-size: 13px; display: none; }
 
   .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: #1A1916; color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 13px; z-index: 400; opacity: 0; transition: opacity 0.25s; pointer-events: none; white-space: nowrap; font-weight: 500; font-family: 'DM Mono', monospace; }
   .toast.show { opacity: 1; }
 
-  @media (max-width: 600px) {
+  @media (max-width: 620px) {
     .app-screen { padding: 1.25rem 1rem 3rem; }
-    .table-header, .row { grid-template-columns: 1fr 140px 140px 36px; }
-    .date-btn { font-size: 12px; padding: 5px 8px; }
+    .table-header, .row { grid-template-columns: 1fr 36px 130px 130px 36px; }
+    .date-btn { font-size: 11px; padding: 4px 7px; }
+    .tab-btn { padding: 8px 14px; font-size: 12px; }
   }
 </style>
 </head>
@@ -123,6 +153,11 @@
     <div class="login-title">ClickUp</div>
     <input class="login-input" type="password" id="login-input" placeholder="senha" onkeydown="if(event.key==='Enter') doLogin()" />
     <button class="login-btn" onclick="doLogin()">Entrar</button>
+    <div class="login-divider">ou</div>
+    <button class="login-btn-drive" onclick="doLoginWithDrive()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 18L2 12l4-6h12l4 6-4 6H6z" stroke="currentColor" stroke-width="1.5"/><path d="M12 6v12M6 18l6-6 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Entrar e conectar ao Drive
+    </button>
     <div class="login-error" id="login-error"></div>
   </div>
 </div>
@@ -145,32 +180,37 @@
         <span id="today-label"></span>
       </div>
       <div class="storage-toggle">
-        <button class="stg-btn" id="btn-local" onclick="useLocal()" title="Salvar neste navegador">
-          📱 Local
-        </button>
-        <button class="stg-btn" id="btn-drive" onclick="useDrive()" title="Sincronizar com Google Drive">
-          ☁️ Drive
-        </button>
+        <button class="stg-btn" id="btn-local" onclick="useLocal()" title="Armazenamento local">📱 Local</button>
+        <button class="stg-btn" id="btn-drive" onclick="useDrive()" title="Google Drive">☁️ Drive</button>
       </div>
       <button class="logout-btn" onclick="doLogout()">sair</button>
     </div>
   </header>
 
+  <div id="drive-warning" class="drive-warning">
+    ⚠️ Você está no modo Local — alterações não sincronizam com o Drive.
+    <button onclick="useDrive()">Conectar ao Drive</button>
+  </div>
+
+  <div class="tabs-wrap">
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-lembrar" onclick="switchTab('lembrar')">📌 Precisa lembrar</button>
+      <button class="tab-btn" id="tab-automaticas" onclick="switchTab('automaticas')">🔄 Automáticas</button>
+    </div>
+  </div>
+
   <div class="main">
     <div class="card">
       <div class="table-header">
+        <div class="th">Cliente</div>
+        <div class="th"></div>
         <div class="th">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          Cliente
-        </div>
-        <div class="th">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           Última produção
         </div>
         <div class="th">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12M8 10l1.5 1.5L12 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Próxima produção
-          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style="opacity:.5"><path d="M6 2v8M3 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12M8 10l1.5 1.5L12 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Próxima produção ↑
         </div>
         <div class="th"></div>
       </div>
@@ -198,40 +238,37 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIGURAÇÕES ──────────────────────────────────────
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOA_PKQKmqQijzmPk-VumaAkVni35B74fzVdBUkUiAgIylH_UkKDEY7dvanHoAQ_M/exec';
 const PASSWORD = '8877guicury';
 const SESSION_KEY = 'pn_auth';
-const LOCAL_KEY = 'pn_clickup_rows';
+const LOCAL_KEY = 'pn_clickup_v2';
 const STORAGE_MODE_KEY = 'pn_storage_mode';
 const DRIVE_FILE_NAME = 'petnaturau-clickup.json';
-const DRIVE_FOLDER_ID = ''; // deixar vazio para salvar na raiz do Drive
 const CLIENT_ID = '653711423119-d9t0b6kunaaefnhec1n3t90imfss5t12.apps.googleusercontent.com';
 const SCOPES = 'https://www.googleapis.com/auth/drive.file';
 
-// ── ESTADO ────────────────────────────────────────────
-let rows = [];
+let data = { lembrar: [], automaticas: [] };
 let nextId = 1;
+let currentTab = 'lembrar';
 let calCtx = null;
 let saveTimer = null;
-let storageMode = 'local'; // 'local' ou 'drive'
+let storageMode = 'drive';
 let driveToken = null;
 let driveFileId = null;
+let openObs = {};
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 const monthsFull = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const dayLabels = ['D','S','T','Q','Q','S','S'];
 
-// ── TOAST ─────────────────────────────────────────────
+// ── TOAST ──────────────────────────────────────────────
 function showToast(msg, dur=2500) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), dur);
 }
 
-// ── LOGIN ─────────────────────────────────────────────
+// ── LOGIN ──────────────────────────────────────────────
 function checkSession() {
   if (sessionStorage.getItem(SESSION_KEY) === 'ok') {
     showApp();
@@ -251,6 +288,29 @@ function doLogin() {
   }
 }
 
+function doLoginWithDrive() {
+  const val = document.getElementById('login-input').value;
+  if (val !== PASSWORD && val !== '') {
+    document.getElementById('login-error').textContent = 'senha incorreta';
+    return;
+  }
+  // salva intenção de conectar ao Drive após o redirect OAuth
+  sessionStorage.setItem(SESSION_KEY, 'ok');
+  sessionStorage.setItem('pn_pending_drive', '1');
+  redirectToDriveAuth();
+}
+
+function redirectToDriveAuth() {
+  const params = new URLSearchParams({
+    client_id: CLIENT_ID,
+    redirect_uri: location.origin + location.pathname,
+    response_type: 'token',
+    scope: SCOPES,
+    prompt: 'select_account'
+  });
+  location.href = 'https://accounts.google.com/o/oauth2/auth?' + params;
+}
+
 function doLogout() {
   sessionStorage.removeItem(SESSION_KEY);
   document.getElementById('app-screen').style.display = 'none';
@@ -263,34 +323,32 @@ function showApp() {
   document.getElementById('app-screen').style.display = 'block';
   document.getElementById('today-label').textContent = today.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
 
-  // checar retorno do OAuth
+  // checar retorno OAuth
   const gotDrive = checkDriveCallback();
-  if (gotDrive) return; // loadData já foi chamado dentro
+  if (gotDrive) return;
 
-  // restaurar modo salvo
-  const savedMode = localStorage.getItem(STORAGE_MODE_KEY) || 'local';
-  if (savedMode === 'drive') {
-    const token = localStorage.getItem('pn_drive_token');
-    const exp = parseInt(localStorage.getItem('pn_drive_token_exp') || '0');
-    if (token && Date.now() < exp) {
-      driveToken = token;
-      storageMode = 'drive';
-      updateStorageUI();
-      loadData();
-      return;
-    }
-    // token expirado, volta para local
+  // tentar restaurar token salvo
+  const token = localStorage.getItem('pn_drive_token');
+  const exp = parseInt(localStorage.getItem('pn_drive_token_exp') || '0');
+  if (token && Date.now() < exp) {
+    driveToken = token;
+    storageMode = 'drive';
+    updateStorageUI();
+    loadData();
+    return;
   }
+
+  // sem token válido — modo local mas mostra aviso
   storageMode = 'local';
   updateStorageUI();
+  showDriveWarning(true);
   loadData();
 }
 
-// ── GOOGLE DRIVE AUTH ─────────────────────────────────
+// ── DRIVE AUTH ─────────────────────────────────────────
 function checkDriveCallback() {
   const hash = location.hash;
   if (!hash.includes('access_token')) return false;
-
   const p = new URLSearchParams(hash.slice(1));
   driveToken = p.get('access_token');
   const exp = Date.now() + (parseInt(p.get('expires_in') || '3600') * 1000);
@@ -300,60 +358,59 @@ function checkDriveCallback() {
   history.replaceState(null, '', location.pathname);
   storageMode = 'drive';
   updateStorageUI();
+  showDriveWarning(false);
   loadData();
   return true;
 }
 
 function useDrive() {
   if (storageMode === 'drive' && driveToken) {
-    if (confirm('Desconectar do Google Drive e usar armazenamento local?')) {
-      driveToken = null;
-      driveFileId = null;
+    if (confirm('Desconectar do Google Drive?')) {
+      driveToken = null; driveFileId = null;
       localStorage.removeItem('pn_drive_token');
       localStorage.removeItem('pn_drive_token_exp');
       storageMode = 'local';
       localStorage.setItem(STORAGE_MODE_KEY, 'local');
       updateStorageUI();
-      showToast('☁️ Desconectado do Drive — usando Local');
+      showDriveWarning(true);
+      showToast('Desconectado do Drive');
     }
     return;
   }
-  // redirecionar para OAuth
-  const params = new URLSearchParams({
-    client_id: CLIENT_ID,
-    redirect_uri: location.origin + location.pathname,
-    response_type: 'token',
-    scope: SCOPES,
-    prompt: 'select_account'
-  });
-  location.href = 'https://accounts.google.com/o/oauth2/auth?' + params;
+  redirectToDriveAuth();
 }
 
 function useLocal() {
   if (storageMode === 'local') return;
-  if (confirm('Trocar para armazenamento local? Os dados do Drive continuarão lá, mas as alterações serão salvas apenas neste navegador.')) {
+  if (confirm('Trocar para Local? Alterações não sincronizarão com o Drive.')) {
     storageMode = 'local';
     localStorage.setItem(STORAGE_MODE_KEY, 'local');
     updateStorageUI();
-    showToast('📱 Usando armazenamento local');
+    showDriveWarning(true);
+    showToast('📱 Modo local ativado');
   }
 }
 
 function updateStorageUI() {
   const btnLocal = document.getElementById('btn-local');
   const btnDrive = document.getElementById('btn-drive');
-  if (storageMode === 'local') {
+  if (storageMode === 'drive') {
+    btnLocal.className = 'stg-btn';
+    btnDrive.className = 'stg-btn active-drive';
+    btnDrive.textContent = '☁️ Drive ✓';
+  } else {
     btnLocal.className = 'stg-btn active-local';
     btnDrive.className = 'stg-btn';
     btnDrive.textContent = '☁️ Drive';
-  } else {
-    btnLocal.className = 'stg-btn';
-    btnDrive.className = 'stg-btn connected-drive';
-    btnDrive.textContent = '☁️ Drive ✓';
   }
 }
 
-// ── CARREGAR DADOS ────────────────────────────────────
+function showDriveWarning(show) {
+  const el = document.getElementById('drive-warning');
+  el.style.display = show ? 'flex' : 'none';
+}
+
+// ── CARREGAR ───────────────────────────────────────────
 async function loadData() {
   showLoading('carregando dados…');
   if (storageMode === 'drive' && driveToken) {
@@ -369,30 +426,27 @@ function loadFromLocal() {
   try {
     const raw = localStorage.getItem(LOCAL_KEY);
     if (raw) {
-      const data = JSON.parse(raw);
-      rows = data.rows || [];
-      nextId = data.nextId || (rows.length + 1);
-      if (rows.length === 0) initEmptyRows();
+      const saved = JSON.parse(raw);
+      data = saved.data || { lembrar: [], automaticas: [] };
+      nextId = saved.nextId || 1;
+      if (!data.lembrar) data.lembrar = [];
+      if (!data.automaticas) data.automaticas = [];
+      if (data.lembrar.length === 0 && data.automaticas.length === 0) initEmptyRows();
     } else {
       initEmptyRows();
     }
-    setSaveState('saved', 'local');
-  } catch(e) {
-    initEmptyRows();
-    setSaveState('error', 'erro');
-  }
+    setSaveState('saved', storageMode === 'drive' ? 'drive' : 'local');
+  } catch(e) { initEmptyRows(); setSaveState('error', 'erro'); }
 }
 
 async function loadFromDrive() {
   try {
     showLoading('conectando ao Drive…');
-    // buscar arquivo pelo nome
     const searchRes = await fetch(
       `https://www.googleapis.com/drive/v3/files?q=name='${DRIVE_FILE_NAME}'+and+trashed=false&spaces=drive&fields=files(id,name)`,
       { headers: { Authorization: `Bearer ${driveToken}` } }
     );
     const searchData = await searchRes.json();
-
     if (searchData.files && searchData.files.length > 0) {
       driveFileId = searchData.files[0].id;
       showLoading('lendo dados do Drive…');
@@ -400,29 +454,30 @@ async function loadFromDrive() {
         `https://www.googleapis.com/drive/v3/files/${driveFileId}?alt=media`,
         { headers: { Authorization: `Bearer ${driveToken}` } }
       );
-      const data = await fileRes.json();
-      rows = data.rows || [];
-      nextId = data.nextId || (rows.length + 1);
-      if (rows.length === 0) initEmptyRows();
+      const saved = await fileRes.json();
+      data = saved.data || { lembrar: [], automaticas: [] };
+      nextId = saved.nextId || 1;
+      if (!data.lembrar) data.lembrar = [];
+      if (!data.automaticas) data.automaticas = [];
+      if (data.lembrar.length === 0 && data.automaticas.length === 0) initEmptyRows();
       setSaveState('saved', 'drive');
+      showDriveWarning(false);
       showToast('☁️ Dados carregados do Drive!');
     } else {
-      // arquivo não existe ainda, cria
       initEmptyRows();
       await saveToDrive();
-      showToast('☁️ Arquivo criado no Drive!');
     }
   } catch(e) {
     console.error(e);
-    // fallback para local
     loadFromLocal();
     showToast('⚠️ Drive indisponível, usando local');
     storageMode = 'local';
     updateStorageUI();
+    showDriveWarning(true);
   }
 }
 
-// ── SALVAR DADOS ──────────────────────────────────────
+// ── SALVAR ─────────────────────────────────────────────
 async function saveData() {
   collectInputValues();
   if (storageMode === 'drive' && driveToken) {
@@ -434,20 +489,16 @@ async function saveData() {
 
 function saveToLocal() {
   try {
-    localStorage.setItem(LOCAL_KEY, JSON.stringify({ rows, nextId }));
+    localStorage.setItem(LOCAL_KEY, JSON.stringify({ data, nextId }));
     setSaveState('saved', 'local');
-  } catch(e) {
-    setSaveState('error', 'erro local');
-  }
+  } catch(e) { setSaveState('error', 'erro local'); }
 }
 
 async function saveToDrive() {
   setSaveState('saving', 'salvando…');
   try {
-    const body = JSON.stringify({ rows, nextId });
-    // sempre salva local como backup
+    const body = JSON.stringify({ data, nextId });
     localStorage.setItem(LOCAL_KEY, body);
-
     if (driveFileId) {
       await fetch(
         `https://www.googleapis.com/upload/drive/v3/files/${driveFileId}?uploadType=media`,
@@ -467,10 +518,7 @@ async function saveToDrive() {
       );
     }
     setSaveState('saved', 'drive');
-  } catch(e) {
-    setSaveState('error', 'erro drive');
-    showToast('⚠️ Erro ao salvar no Drive');
-  }
+  } catch(e) { setSaveState('error', 'erro drive'); showToast('⚠️ Erro ao salvar no Drive'); }
 }
 
 function debounceSave() {
@@ -479,43 +527,48 @@ function debounceSave() {
   saveTimer = setTimeout(saveData, 1200);
 }
 
-// ── UI HELPERS ────────────────────────────────────────
-function showLoading(msg) {
-  document.getElementById('loading').classList.remove('hidden');
-  document.getElementById('loading-text').textContent = msg;
-}
-function hideLoading() {
-  document.getElementById('loading').classList.add('hidden');
+function collectInputValues() {
+  ['lembrar','automaticas'].forEach(tab => {
+    data[tab].forEach(r => {
+      const el = document.getElementById('ci-' + r.id);
+      if (el) r.client = el.value;
+      const obsEl = document.getElementById('obs-' + r.id);
+      if (obsEl) r.obs = obsEl.value;
+    });
+  });
 }
 
+// ── HELPERS ────────────────────────────────────────────
+function showLoading(msg) { document.getElementById('loading').classList.remove('hidden'); document.getElementById('loading-text').textContent = msg; }
+function hideLoading() { document.getElementById('loading').classList.add('hidden'); }
 function setSaveState(state, label) {
   const ind = document.getElementById('save-indicator');
   const lbl = document.getElementById('save-label');
   ind.className = 'save-indicator ' + state;
-  const icons = { saved: '✓', saving: '…', error: '!' };
-  lbl.textContent = (icons[state] || '') + ' ' + label;
+  lbl.textContent = ({ saved: '✓', saving: '…', error: '!' }[state] || '') + ' ' + label;
 }
-
 function initEmptyRows() {
-  rows = [
-    { id: nextId++, client: '', ultima: null, proxima: null },
-    { id: nextId++, client: '', ultima: null, proxima: null },
-  ];
+  data = {
+    lembrar: [{ id: nextId++, client: '', ultima: null, proxima: null, obs: '' }, { id: nextId++, client: '', ultima: null, proxima: null, obs: '' }],
+    automaticas: [{ id: nextId++, client: '', ultima: null, proxima: null, obs: '' }, { id: nextId++, client: '', ultima: null, proxima: null, obs: '' }]
+  };
 }
 
-function collectInputValues() {
-  rows.forEach(r => {
-    const el = document.getElementById('ci-' + r.id);
-    if (el) r.client = el.value;
-  });
+// ── TABS ───────────────────────────────────────────────
+function switchTab(tab) {
+  collectInputValues();
+  currentTab = tab;
+  document.getElementById('tab-lembrar').className = 'tab-btn' + (tab === 'lembrar' ? ' active' : '');
+  document.getElementById('tab-automaticas').className = 'tab-btn' + (tab === 'automaticas' ? ' active' : '');
+  openObs = {};
+  render();
 }
 
-// ── DATAS ─────────────────────────────────────────────
+// ── DATAS ──────────────────────────────────────────────
 function formatDate(d) {
   if (!d) return null;
   return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear();
 }
-
 function parseDate(s) {
   if (!s) return null;
   if (s.includes('T')) { const d = new Date(s); return isNaN(d) ? null : d; }
@@ -524,11 +577,15 @@ function parseDate(s) {
   return new Date(+parts[2], +parts[1] - 1, +parts[0]);
 }
 
-// ── TABELA ────────────────────────────────────────────
+// ── RENDER ─────────────────────────────────────────────
 function getSortedRows() {
+  const rows = data[currentTab] || [];
   return [...rows].sort((a, b) => {
     const da = parseDate(a.proxima), db = parseDate(b.proxima);
-    if (!da && !db) return 0; if (!da) return 1; if (!db) return -1;
+    // sem data vai para o final
+    if (!da && !db) return 0;
+    if (!da) return 1;
+    if (!db) return -1;
     return da - db;
   });
 }
@@ -545,7 +602,7 @@ function getProximaState(s) {
 
 function addRow() {
   collectInputValues();
-  rows.push({ id: nextId++, client: '', ultima: null, proxima: null });
+  data[currentTab].push({ id: nextId++, client: '', ultima: null, proxima: null, obs: '' });
   render(); debounceSave();
   const inputs = document.querySelectorAll('.client-input');
   if (inputs.length) inputs[inputs.length - 1].focus();
@@ -553,8 +610,21 @@ function addRow() {
 
 function deleteRow(id) {
   collectInputValues();
-  rows = rows.filter(r => r.id !== id);
+  data[currentTab] = data[currentTab].filter(r => r.id !== id);
+  delete openObs[id];
   render(); saveData();
+}
+
+function toggleObs(id) {
+  collectInputValues();
+  openObs[id] = !openObs[id];
+  render();
+  if (openObs[id]) {
+    setTimeout(() => {
+      const el = document.getElementById('obs-' + id);
+      if (el) el.focus();
+    }, 50);
+  }
 }
 
 function render() {
@@ -564,20 +634,31 @@ function render() {
   empty.style.display = sorted.length === 0 ? 'block' : 'none';
   container.innerHTML = '';
   sorted.forEach(row => {
-    const div = document.createElement('div');
-    div.className = 'row';
+    const wrap = document.createElement('div');
+    wrap.className = 'row-wrap';
+
     const proxState = getProximaState(row.proxima);
-    div.innerHTML = `
+    const isObsOpen = !!openObs[row.id];
+    const hasObs = !!(row.obs && row.obs.trim());
+
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'row';
+    rowDiv.innerHTML = `
       <div><input class="client-input" id="ci-${row.id}" type="text" placeholder="Nome do cliente…" value="${escHtml(row.client)}" oninput="onClientInput(${row.id})" autocomplete="off" /></div>
       <div>
+        <button class="obs-btn ${hasObs ? 'has-obs' : ''}" onclick="toggleObs(${row.id})" title="${isObsOpen ? 'Fechar observações' : 'Ver/editar observações'}">
+          ${isObsOpen ? '📝' : (hasObs ? '📝' : '💬')}
+        </button>
+      </div>
+      <div>
         <button class="date-btn ${row.ultima ? 'has-date' : ''}" onclick="openCal(event,${row.id},'ultima')">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           ${row.ultima || 'Selecionar'}
         </button>
       </div>
       <div>
         <button class="date-btn proxima-date ${proxState ? 'has-date' : ''} ${proxState}" onclick="openCal(event,${row.id},'proxima')">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12M8 10l1.5 1.5L12 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12M8 10l1.5 1.5L12 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           ${row.proxima || 'Selecionar'}
         </button>
       </div>
@@ -587,7 +668,17 @@ function render() {
         </button>
       </div>
     `;
-    container.appendChild(div);
+    wrap.appendChild(rowDiv);
+
+    // Painel de observações
+    const obsDiv = document.createElement('div');
+    obsDiv.className = 'obs-panel' + (isObsOpen ? ' open' : '');
+    obsDiv.innerHTML = `
+      <span class="obs-label">Observações — ${escHtml(row.client) || 'cliente'}</span>
+      <textarea class="obs-textarea" id="obs-${row.id}" placeholder="Digite observações sobre este cliente…" oninput="onObsInput(${row.id})">${escHtml(row.obs || '')}</textarea>
+    `;
+    wrap.appendChild(obsDiv);
+    container.appendChild(wrap);
   });
 }
 
@@ -596,15 +687,21 @@ function escHtml(s) {
 }
 
 function onClientInput(id) {
-  const row = rows.find(r => r.id === id);
+  const row = data[currentTab].find(r => r.id === id);
   if (row) row.client = document.getElementById('ci-' + id).value;
   debounceSave();
 }
 
-// ── CALENDÁRIO ────────────────────────────────────────
+function onObsInput(id) {
+  const row = data[currentTab].find(r => r.id === id);
+  if (row) row.obs = document.getElementById('obs-' + id).value;
+  debounceSave();
+}
+
+// ── CALENDÁRIO ─────────────────────────────────────────
 function openCal(e, rowId, field) {
   e.stopPropagation(); collectInputValues();
-  const row = rows.find(r => r.id === rowId);
+  const row = data[currentTab].find(r => r.id === rowId);
   const existing = row[field] ? parseDate(row[field]) : null;
   const rect = e.currentTarget.getBoundingClientRect();
   calCtx = { rowId, field, year: existing ? existing.getFullYear() : today.getFullYear(), month: existing ? existing.getMonth() : today.getMonth() };
@@ -653,22 +750,22 @@ function navCal(dir) {
   calCtx.month += dir;
   if (calCtx.month > 11) { calCtx.month = 0; calCtx.year++; }
   if (calCtx.month < 0) { calCtx.month = 11; calCtx.year--; }
-  const row = rows.find(r => r.id === calCtx.rowId);
+  const row = data[currentTab].find(r => r.id === calCtx.rowId);
   renderCal(row[calCtx.field] ? parseDate(row[calCtx.field]) : null);
 }
 
 function selectDate(year, month, day) {
   const d = new Date(year, month, day);
-  const row = rows.find(r => r.id === calCtx.rowId);
+  const row = data[currentTab].find(r => r.id === calCtx.rowId);
   if (row) { row[calCtx.field] = formatDate(d); closeCal(); render(); saveData(); }
 }
 
 function clearDate() {
-  const row = rows.find(r => r.id === calCtx.rowId);
+  const row = data[currentTab].find(r => r.id === calCtx.rowId);
   if (row) { row[calCtx.field] = null; closeCal(); render(); saveData(); }
 }
 
-// ── INIT ──────────────────────────────────────────────
+// ── INIT ───────────────────────────────────────────────
 checkSession();
 </script>
 </body>
