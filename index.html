@@ -115,7 +115,7 @@
 
   .cal-overlay { position: fixed; inset: 0; z-index: 200; display: none; }
   .cal-backdrop { position: absolute; inset: 0; }
-  .cal-box { position: absolute; background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 14px; width: 256px; box-shadow: 0 8px 24px rgba(0,0,0,0.10); }
+  .cal-box { position: fixed; background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 14px; width: 256px; box-shadow: 0 8px 24px rgba(0,0,0,0.10); z-index: 201; }
   .cal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
   .cal-title { font-size: 13px; font-weight: 600; color: var(--text); text-transform: capitalize; }
   .cal-nav { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 4px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
@@ -727,21 +727,21 @@ function openCal(e, rowId, field) {
   const rect = e.currentTarget.getBoundingClientRect();
   calCtx = { rowId, field, year: existing ? existing.getFullYear() : today.getFullYear(), month: existing ? existing.getMonth() : today.getMonth() };
   const box = document.getElementById("cal-box");
-  const CAL_H = 320;
+  const CAL_H = 300;
   const CAL_W = 256;
-  const spaceBelow = window.innerHeight - rect.bottom;
-  const spaceAbove = rect.top;
+  const margin = 8;
   let top, left;
-  if (spaceBelow >= CAL_H || spaceBelow >= spaceAbove) {
-    top = rect.bottom + window.scrollY + 6;
+  if (window.innerHeight - rect.bottom >= CAL_H + margin) {
+    top = rect.bottom + 6;
   } else {
-    top = rect.top + window.scrollY - CAL_H - 6;
+    top = rect.top - CAL_H - 6;
   }
-  left = rect.left + window.scrollX;
-  if (left + CAL_W > window.innerWidth - 12) left = window.innerWidth - CAL_W - 12;
-  left = Math.max(8, left);
-  top = Math.max(window.scrollY + 8, top);
-  box.style.top = top + "px"; box.style.left = left + "px";
+  top = Math.max(margin, Math.min(top, window.innerHeight - CAL_H - margin));
+  left = rect.left;
+  if (left + CAL_W > window.innerWidth - margin) left = window.innerWidth - CAL_W - margin;
+  left = Math.max(margin, left);
+  box.style.top = top + "px";
+  box.style.left = left + "px";
   document.getElementById("cal-overlay").style.display = "block";
   renderCal(existing);
 }
