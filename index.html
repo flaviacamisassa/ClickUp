@@ -200,6 +200,12 @@
   </div>
 
   <div class="main">
+    <div style="margin-bottom:12px;position:relative;">
+      <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.4;" width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 10l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <input id="search-input" type="text" placeholder="Pesquisar cliente…" oninput="render()"
+        style="width:100%;padding:9px 12px 9px 36px;border:1px solid var(--border);border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:var(--surface);outline:none;transition:border-color .15s;box-shadow:var(--shadow);"
+        onfocus="this.style.borderColor='var(--border-strong)'" onblur="this.style.borderColor='var(--border)'" />
+    </div>
     <div class="card">
       <div class="table-header">
         <div class="th">Cliente</div>
@@ -591,10 +597,10 @@ function parseDate(s) {
 
 // ── RENDER ─────────────────────────────────────────────
 function getSortedRows() {
-  const rows = data[currentTab] || [];
+  const q = (document.getElementById("search-input")?.value || "").toLowerCase().trim();
+  const rows = (data[currentTab] || []).filter(r => !q || (r.client || "").toLowerCase().includes(q));
   return [...rows].sort((a, b) => {
     const da = parseDate(a.proxima), db = parseDate(b.proxima);
-    // sem data vai para o final
     if (!da && !db) return 0;
     if (!da) return 1;
     if (!db) return -1;
