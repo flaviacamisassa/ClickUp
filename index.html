@@ -726,13 +726,23 @@ function openCal(e, rowId, field) {
   const existing = row[field] ? parseDate(row[field]) : null;
   const rect = e.currentTarget.getBoundingClientRect();
   calCtx = { rowId, field, year: existing ? existing.getFullYear() : today.getFullYear(), month: existing ? existing.getMonth() : today.getMonth() };
-  const box = document.getElementById('cal-box');
-  let top = rect.bottom + window.scrollY + 6;
-  let left = rect.left + window.scrollX;
-  if (left + 256 > window.innerWidth - 12) left = window.innerWidth - 256 - 12;
-  if (top + 300 > window.scrollY + window.innerHeight) top = rect.top + window.scrollY - 310;
-  box.style.top = top + 'px'; box.style.left = Math.max(8, left) + 'px';
-  document.getElementById('cal-overlay').style.display = 'block';
+  const box = document.getElementById("cal-box");
+  const CAL_H = 320;
+  const CAL_W = 256;
+  const spaceBelow = window.innerHeight - rect.bottom;
+  const spaceAbove = rect.top;
+  let top, left;
+  if (spaceBelow >= CAL_H || spaceBelow >= spaceAbove) {
+    top = rect.bottom + window.scrollY + 6;
+  } else {
+    top = rect.top + window.scrollY - CAL_H - 6;
+  }
+  left = rect.left + window.scrollX;
+  if (left + CAL_W > window.innerWidth - 12) left = window.innerWidth - CAL_W - 12;
+  left = Math.max(8, left);
+  top = Math.max(window.scrollY + 8, top);
+  box.style.top = top + "px"; box.style.left = left + "px";
+  document.getElementById("cal-overlay").style.display = "block";
   renderCal(existing);
 }
 
