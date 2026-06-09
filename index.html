@@ -565,6 +565,18 @@ function switchTab(tab) {
 }
 
 // ── DATAS ──────────────────────────────────────────────
+function dateLabel(s) {
+  if (!s) return null;
+  const d = parseDate(s);
+  if (!d) return s;
+  const diff = Math.round((d - today) / 86400000);
+  const base = s.includes('/') ? s : formatDate(d);
+  if (diff === -1) return base + ' (ontem)';
+  if (diff === 0) return base + ' (hoje)';
+  if (diff === 1) return base + ' (amanhã)';
+  return base;
+}
+
 function formatDate(d) {
   if (!d) return null;
   return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear();
@@ -653,13 +665,13 @@ function render() {
       <div>
         <button class="date-btn ${row.ultima ? 'has-date' : ''}" onclick="openCal(event,${row.id},'ultima')">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          ${row.ultima || 'Selecionar'}
+          ${dateLabel(row.ultima) || 'Selecionar'}
         </button>
       </div>
       <div>
         <button class="date-btn proxima-date ${proxState ? 'has-date' : ''} ${proxState}" onclick="openCal(event,${row.id},'proxima')">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 1v4M11 1v4M2 7h12M8 10l1.5 1.5L12 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          ${row.proxima || 'Selecionar'}
+          ${dateLabel(row.proxima) || 'Selecionar'}
         </button>
       </div>
       <div>
